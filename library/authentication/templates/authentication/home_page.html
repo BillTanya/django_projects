@@ -1,0 +1,15 @@
+{% extends 'authentication/base.html'%}
+{% block title%}
+<title> Home page </title>
+{% endblock title%}
+
+
+{% block content %}
+ {% if request.user.is_authenticated %}
+<h2>Hello, {{ user.first_name }}!</h2>
+
+{% else %}
+<h1>{{ title }}</h1>
+
+{% endif %}
+{% endblock content %}

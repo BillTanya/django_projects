@@ -1,0 +1,29 @@
+{% extends 'authentication/base.html'%}
+    {% block title%}
+<title> {{ title }} </title>
+    {% endblock title%}
+
+{% block content %}
+{% if request.user.is_authenticated %}
+
+<h1>{{title}}</h1>
+<p><b>Order №</b> {{post.id}}<br>
+    <b>Ordered book</b> <a href="{% url 'book_id' post.book.id %}">{{post.book.name}}</a><br>
+    <b>Customer</b> <a href="{% url 'user' post.user.id %}">{{ post.user.first_name }} {{ post.user.middle_name}}
+        {{ post.user.last_name}}</a> <br>
+    <b>Created at</b> {{ post.created_at }} <br>
+     <b>Plated end at</b> {{ post.plated_end_at }}<br>
+    {% if post.end_at %}
+    <b>Closed: YES  </b><br>
+    <b>Closed at </b> {{ post.end_at }}
+    {% else %}
+
+    <b>Closed: NO <b> {% if user.role == 1 %}<a href="{% url 'close_order' post.id %}"><button type="submit"> Close order </button></a>
+        {% endif %}
+        {% endif %}
+
+
+</p>
+
+{% endif %}
+{% endblock content %}

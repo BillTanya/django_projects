@@ -1,0 +1,95 @@
+{% extends 'authentication/base.html'%}
+{% block title%}
+<title> {{ title }} </title>
+{% endblock title%}
+{% block content %}
+{% if request.user.is_authenticated %}
+    <style>
+        .content-wrapper {
+            display: flex;
+        }
+
+        .main-content {
+            flex: 1;
+        }
+
+        .details-sidebar {
+            width: 300px;
+        }
+    </style>
+
+<div class="content-wrapper">
+     <div class="main-content">
+        <form method="GET" action="filter">
+            <div class="input-group">
+
+               <input type="search" placeholder="Book name..." name="name">
+                <button type="submit" class="btn btn-primary">&#128269</button>
+
+ 
+            </div>
+        </form>
+
+
+        <ul style="list-style-type:circle">
+           <h1>Books:</h1>
+        {% for post in posts %}
+
+            <li>  <a href="{% url 'book_id' post.id %}"><b>{{ post.name }}</b></a>
+<!--                count: <a href="{% url 'book_id' post.id %}">{{ post.count }}</a> | &ndash;&gt;-->
+
+                {% if post.get_authors.authors %}
+                authors: {% for author in post.get_authors.authors %}
+                <a href="{% url 'author_by_id' author.id %}">{{ author }}</a>,
+                {% endfor %}
+                <a href="{% url 'author_by_id' post.get_authors.last_author.id %}">{{ post.get_authors.last_author }}</a>
+                {% elif post.get_authors.last_author %}
+                author:  <a href="{% url 'author_by_id' post.get_authors.last_author.id %}">{{ post.get_authors.last_author }}</a>
+                {% else %}
+                author: --- no author yet ---
+                {% endif %}
+            </li>
+
+        {% endfor %}</div>
+        </ul>
+
+    <div class="details-sidebar">
+        <h4>Filters</h4>
+    <details data-filter-title="id" >
+        <summary>
+         By name
+        </summary>
+     <ul>
+        <li >
+        <a href="{% url 'books' %}">All</a></li>
+    {% for book in books %}
+        <li>
+        <a href="?id={{book.id}}">{{book.name}}</a></li>
+
+        {% endfor %}
+
+      </ul>
+    </details>
+        <details data-filter-title="author" close>
+        <summary>
+            By author
+        </summary>
+        <ul>
+            <li class="selected">
+                <a href="{% url 'books' %}">All</a>
+            </li>
+            {% for author in authors %}
+            {% if author != 'without author' %}
+            <li><a href="?author={{ author.id }}">{{ author }}</a></li>
+            {% else %}
+            <li><a href="?noauthor=1">{{ author }}</a></li>
+            {% endif %}
+            {% endfor %}
+        </ul>
+
+    </details>
+    </div>
+
+</div>
+{% endif %}
+{% endblock content %}

@@ -1,0 +1,39 @@
+{% extends 'authentication/base.html'%}
+    {% block title%}
+<title> {{ title }} </title>
+    {% endblock title%}
+{% block content %}
+
+{% if request.user.is_authenticated %}
+    <form method="GET" >
+            <div class="input-group">
+
+                <input type="search" placeholder="User name..." name="name">
+                <button type="submit" class="btn btn-primary">&#128269</button><br>
+                    </div>
+    </form>
+<!-- <form method="GET" >-->
+<!--            <div class="input-group">-->
+<!--                <select name="role">-->
+<!--                    <option value="any">any role</option>-->
+<!--                    <option value="librarian">librarian</option>-->
+<!--                    <option value="visitor">visitor</option>-->
+<!--                </select>-->
+<!--                <button type="submit" class="btn btn-primary">&#128269</button>-->
+
+
+<!--            </div>-->
+<!--    </form>-->
+<h1>Users:</h1>
+<ul style="list-style-type:circle">
+
+    {% for post in posts %}
+    {% if post.role == 1 %}
+    <li> <b>librarian:</b> <a href="{% url 'user' post.id %}">{{post.first_name}} {{post.last_name}}</a></li>
+    {% else %}
+    <li> <b>visitor:</b> <a href="{% url 'user' post.id %}">{{post.first_name}} {{post.last_name}}</a></li>
+    {% endif %}
+    {% endfor %}
+</ul>
+{% endif %}
+{% endblock content %}

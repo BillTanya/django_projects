@@ -1,0 +1,23 @@
+{% extends 'authentication/base.html'%}
+    {% block title%}
+<title> {{ title }} </title>
+    {% endblock title%}
+{% block content %}
+
+<h3>{{ title }}</h3>
+
+
+<form action="{% url 'register' %}", method="post">
+{% csrf_token %}
+  <p>
+      {% for f in form %}
+      <label class="form-lable" for="{{ f.id_for_label }}">{{ f.label }}: </label>
+      {{ f }}  </p>
+    <div class="form-error">{{ f.errors }}</div>
+   {% endfor %}
+
+  <button type="submit"> Add </button>
+
+</form>
+
+{% endblock content %}

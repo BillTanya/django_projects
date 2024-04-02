@@ -1,0 +1,34 @@
+{% extends 'authentication/base.html'%}
+{% block title%}
+<title> {{ title }} </title>
+{% endblock title%}
+
+{% block content %}
+{% if request.user.is_authenticated %}
+
+<h1>{{title}}</h1>
+Author: <b>{{post.name}}
+    {% if post.patronymic %}
+    {{ post.patronymic }}
+    {% endif %}
+    {{ post.surname}}</b>
+{% if post.get_books.books %}
+Books:
+    {% for book in post.get_books.books %}
+    <b><a href="{% url 'book_id' book.id %}">{{ book.name }}</a></b>,
+{% endfor %}
+<b><a href="{% url 'book_id' post.get_books.last_book.id %}"> {{ post.get_books.last_book.name }}</a></b>
+{% elif post.get_books.last_book %}
+Book:
+<b><a href="{% url 'book_id' post.get_books.last_book.id %}"> {{ post.get_books.last_book.name }}</a></b>
+{% else %}
+Book: <b>------ book is not add ---------</b>
+{% endif %}
+<br>
+
+</p>
+
+</ul>
+
+{% endif %}
+{% endblock content %}

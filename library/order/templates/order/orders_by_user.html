@@ -1,0 +1,45 @@
+{% extends 'authentication/base.html'%}
+    {% block title%}
+<title> {{ title }} </title>
+    {% endblock title%}
+{% block content %}
+{% if request.user.is_authenticated %}
+{% if user.role == 0 %}
+    <form method="GET" action="filter">
+            <div class="input-group">
+                <input type="number" placeholder="Order id..." name="id" value="" min="1">
+                <button type="submit" class="btn btn-primary">&#128269</button>
+            </div>
+    </form>
+<h1>{{ user.first_name }}'s Orders: </h1>
+<a href="{% url 'add_order' user.id  %}"><button type="submit"> Create new order </button></a><br>
+<ul style="list-style-type:circle">
+{% for post in posts %}
+{% if user.id == post.user.id %}
+    <li><a href="{% url 'order_id' post.id %}"><b>order №</b> {{ post.id }}</a> |
+        <b>created: </b> {{ post.created_at }}</li>
+{% endif %}
+    {% endfor %}
+</ul>
+
+{% else %}
+    <form method="GET" action="filter">
+            <div class="input-group">
+                <input type="number" placeholder="Order id..." name="id" value="" min="1">
+                <button type="submit" class="btn btn-primary">&#128269</button>
+            </div>
+    </form>
+<h1> Orders: </h1>
+<ul style="list-style-type:circle">
+    {% for post in posts %}
+    <li ><a href="{% url 'order_id' post.id %}"> <b>order №</b> {{ post.id }}</a> |
+        <b>created: </b> {{ post.created_at }}
+    </li>
+    {% endfor %}
+</ul>
+
+
+{% endif %}
+
+{% endif %}
+{% endblock content %}

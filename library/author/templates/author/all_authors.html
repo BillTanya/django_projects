@@ -1,0 +1,39 @@
+{% extends 'authentication/base.html'%}
+    {% block title%}
+<title> {{ title }} </title>
+    {% endblock title%}
+{% block content %}
+{% if request.user.is_authenticated %}
+<div class="content-wrapper">
+     <div class="main-content">
+        <form method="GET">
+            <div class="input-group">
+
+               <input type="search" placeholder="Author name..." name="name">
+                <button type="submit" class="btn btn-primary">&#128269</button>
+            </div>
+        </form>
+
+
+<h1>{{title}}</h1>
+
+
+    <a href="{% url 'add_author' %}"><button type="submit"> Add new author  </button></a>
+   <br>
+<ul style="list-style-type:circle" >
+    {% for post in posts %}
+    <li> <a href="{% url 'del_author_id' post.id %}"><button type="submit"> del author  </button></a>
+        <b>author: </b> <a href="{% url 'author_by_id' post.id %}">{{ post.name }}
+        {% if post.patronymic %}
+        {{ post.patronymic }}
+        {% endif %}
+        {{ post.surname}}
+    </a>
+
+         </li>
+    {% endfor %}
+
+</ul>
+
+{% endif %}
+{% endblock content %}

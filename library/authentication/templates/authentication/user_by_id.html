@@ -1,0 +1,36 @@
+{% extends 'authentication/base.html'%}
+{% block title%}
+<title> {{ title }} </title>
+{% endblock title%}
+
+{% block content %}
+{% if request.user.is_authenticated %}
+<h1>{{title}}</h1>
+<p><b>User </b> {{post.first_name}} {{ post.last_name}} <br>
+    {% if post.role == 0 %}
+    <b>rele:</b> visitor <br>
+    {% else %}
+    <b>rele:</b> librarian <br>
+    {% endif %}
+    <b>created at:</b> {{ post.created_at }} <br>
+    {% if user.role == 1 %}
+    {% if post.role == 0 %}
+    <b>borrowed books: </b>
+    {% for book in books %}
+    <a href="{% url 'book_id' book.book.id %}">{{ book.book.name }}</a>,
+    {% endfor %}
+    {% if last_book %}
+    <a href="{% url 'book_id' last_book.book.id %}">{{ last_book.book.name }}</a> <br>
+    {% else %}
+    -- no borrowed books--<br>
+    {% endif %}
+    {% endif %}
+    {% endif %}
+    {% if post.is_active == True %}
+    <b>active:</b> YES
+    {% else %}
+    <b>active:</b> NO
+    {% endif %}
+</p>
+{% endif %}
+{% endblock content %}
